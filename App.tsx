@@ -26,17 +26,26 @@ function App() {
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [renameOnExport, setRenameOnExport] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  
+  // Initialize Dark Mode from Local Storage
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('stockmeta_theme');
+    // Default to true (dark) if no preference found
+    return savedTheme ? savedTheme === 'dark' : true;
+  });
+  
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const [view, setView] = useState<'generator' | 'prompts' | 'about'>('generator');
 
-  // Theme Toggle Effect
+  // Theme Toggle Effect & Persistence
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('stockmeta_theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('stockmeta_theme', 'light');
     }
   }, [isDarkMode]);
 
